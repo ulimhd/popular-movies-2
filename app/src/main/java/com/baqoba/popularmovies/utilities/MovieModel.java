@@ -12,15 +12,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class MovieModel {
 
-    public static final int COL_ID = 0;
-    public static final int COL_MOVIE_ID = 1;
-    public static final int COL_MOVIE_TITLE = 2;
-    public static final int COL_MOVIE_POSTER_PATH = 3;
-    public static final int COL_MOVIE_OVERVIEW = 4;
-    public static final int COL_MOVIE_VOTE_AVERAGE = 5;
-    public static final int COL_MOVIE_RELEASE_DATE = 6;
-    public static final int COL_MOVIE_BACKDROP_PATH = 7;
-
     public MovieModel(){
 
     }

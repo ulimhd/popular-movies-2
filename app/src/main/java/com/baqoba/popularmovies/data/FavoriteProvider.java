@@ -81,7 +81,6 @@ public class FavoriteProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         Uri returnUri;
 
-        Log.d("mATCH: " , Integer.toString(match));
 
         switch (match) {
             case MOVIE: {

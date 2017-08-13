@@ -43,7 +43,7 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
     private ImageView mThumbnail;
     private Button mFavoriteBtn;
 
-    private String idPath,titlePath, posterPath, overviewPath, ratingPath, releasePath;
+    private String idPath,titlePath, posterPath, overviewPath, ratingPath, releasePath, backdropPath;
     private String isFavorite = "0";
 
     TrailerAdapter trailerAdapter;
@@ -82,9 +82,8 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             overviewPath = getIntent().getExtras().getString("overview");
             ratingPath = getIntent().getExtras().getString("rating");
             releasePath = getIntent().getExtras().getString("release");
-         //   isFavorite = getIntent().getExtras().getString("isFavorite");
-
-            Log.d("path", posterPath);
+            backdropPath = getIntent().getExtras().getString("backdrop");
+            isFavorite = getIntent().getExtras().getString("isFavorite");
 
             mTitle.setText(titlePath);
             mReleaseDate.setText(releasePath);
@@ -96,7 +95,6 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             } else {
                 Picasso.with(getApplicationContext()).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(mThumbnail);
             }
-
             if(isFavorite.equals("0")){
                 mFavoriteBtn.setText(R.string.set_favorite);
             }else{
@@ -133,7 +131,11 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             mFavoriteBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "button clicked", Toast.LENGTH_SHORT).show();
-                    setToFavorite();
+                    if(isFavorite.equals("0")) {
+                        setToFavorite();
+                    }else{
+                        removeFavorite();
+                    }
                 }
             });
 
@@ -142,7 +144,6 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
     }
 
     private void loadReviews(String idPath) {
-        Log.d("test1", "TEST 1 working");
         callReviewsApi(idPath).enqueue(new Callback<Reviews>() {
             @Override
             public void onResponse(Call<Reviews> call, Response<Reviews> response) {
@@ -151,7 +152,6 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
                 List<ReviewModel> results = fetchResult(response);
                 mReviewIndicator.setVisibility(View.GONE);
                 reviewAdapter.addAll(results);
-                Log.d("Resutl" , results.toString());
 
             }
 
@@ -186,7 +186,6 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             @Override
             public void onResponse(Call<Trailers> call, Response<Trailers> response) {
                 // Got data. Send it to adapter
-                Log.d("Test8:" , "Test8");
 
                 List<TrailerModel> results = fetchResults(response);
                 mTrailerIndicator.setVisibility(View.GONE);
@@ -231,82 +230,63 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
 
     }
 
-    public void setToFavorite(){
-/*
-        if(isFavorite.equals("0")) {
-            new AsyncTask<Void, Void, Uri>() {
-                @Override
-                protected Uri doInBackground(Void... params) {
-                    ContentValues contentValues = new ContentValues();
+    public void setToFavorite() {
 
-                    contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID, idPath);
-                    contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_TITLE, titlePath);
-                 //   contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_POSTER_PATH, posterPath);
-                 //   contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_OVERVIEW, overviewPath);
-                 //   contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_VOTE_AVERAGE, ratingPath);
-                 //   contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_RELEASE_DATE, releasePath);
-                 //   c ontentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_IS_FAVORITE, IS_FAVORITE);
+        new AsyncTask<Void, Void, Uri>() {
+            @Override
+            protected Uri doInBackground(Void... params) {
+                ContentValues contentValues = new ContentValues();
 
-                    return getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI,
-                            contentValues);
+                // Put the task description and selected mPriority into the ContentValues
+                contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID, idPath);
+                contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_TITLE, titlePath);
+                contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_POSTER_PATH, posterPath);
+                contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_OVERVIEW, overviewPath);
+                contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_VOTE_AVERAGE, ratingPath);
+                contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_RELEASE_DATE, ratingPath);
+                contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_BACKDROP_PATH, backdropPath);
+                Log.d("idpath: ", idPath);
+                Log.d("titlePath: ", titlePath);
+                Log.d("posterPath: ", posterPath);
+                Log.d("backdropPath: ", backdropPath);
+                // Insert the content values via a ContentResolver
+                return getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, contentValues);
+            }
 
+
+            @Override
+            protected void onPostExecute(Uri returnUri) {
+                if (returnUri != null) {
+                    Toast.makeText(getBaseContext(), returnUri.toString(), Toast.LENGTH_LONG).show();
+                    mFavoriteBtn.setText("Remove from favorite");
                 }
+            }
+        }.execute();
+    }
 
-                @Override
-                protected void onPostExecute(Uri returnUri) {
-                    //   item.setIcon(R.drawable.abc_btn_rating_star_on_mtrl_alpha);
-                    if (mToast != null) {
-                        mToast.cancel();
-                    }
+    public void removeFavorite(){
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... params) {
+                return getContentResolver().delete(
+                        FavoriteContract.FavoriteEntry.CONTENT_URI,
+                        FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID + " = ?",
+                        new String[]{idPath}
+                );
+            }
 
-                    mToast = Toast.makeText(getBaseContext(), "added to favorites", Toast.LENGTH_LONG);
-                    mToast.show();
-                    isFavorite="1";
-                    mFavoriteBtn.setText(R.string.remove_favorite);
+            @Override
+            protected void onPostExecute(Integer rowsDeleted) {
+                if (mToast != null) {
+                    mToast.cancel();
                 }
-            }.execute();
-        }else{
-            new AsyncTask<Void, Void, Integer>() {
-                @Override
-                protected Integer doInBackground(Void... params) {
-                    return getContentResolver().delete(
-                            FavoriteContract.FavoriteEntry.CONTENT_URI,
-                            FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID + " = ?",
-                            new String[]{idPath}
-                    );
-                }
-
-                @Override
-                protected void onPostExecute(Integer rowsDeleted) {
-                    //       item.setIcon(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
-                    if (mToast != null) {
-                        mToast.cancel();
-                    }
-                    mToast = Toast.makeText(getBaseContext(), "removed from favorites", Toast.LENGTH_SHORT);
-                    mToast.show();
-                    isFavorite="0";
-                    mFavoriteBtn.setText(R.string.set_favorite);
-                }
-            }.execute();
-        }
-*/
-        ContentValues contentValues = new ContentValues();
-        // Put the task description and selected mPriority into the ContentValues
-        contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID, idPath);
-        contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_TITLE, titlePath);
-        Log.d("idpath: ", FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID);
-        Log.d("titlePath: ", FavoriteContract.FavoriteEntry.COLUMN_MOVIE_TITLE);
-        // Insert the content values via a ContentResolver
-        Uri uri = getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, contentValues);
-
-        // Display the URI that's returned with a Toast
-        // [Hint] Don't forget to call finish() to return to MainActivity after this insert is complete
-        if(uri != null) {
-            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                mToast = Toast.makeText(getApplicationContext(), "Movie removed from favorites", Toast.LENGTH_SHORT);
+                mToast.show();
+                mFavoriteBtn.setText("Set as favorite");
+            }
+        }.execute();
     }
 
 
 
-
-    }
 }

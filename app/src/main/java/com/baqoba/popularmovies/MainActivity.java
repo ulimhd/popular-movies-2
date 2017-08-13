@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private EndlessRecyclerViewScrollListener scrollListener;
 
     SharedPreferences sharedPref;
-
     PaginationAdapter adapter;
+    String isFavorite;
 
     public static final String PREFERENCES = "pref";
     public static final String SORT_BY = "sort_by";
@@ -74,13 +74,14 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
             FavoriteContract.FavoriteEntry.COLUMN_MOVIE_BACKDROP_PATH
     };
 
-    public static final int COL_MOVIE_ID = 0;
-    public static final int COL_MOVIE_TITLE = 1;
-    public static final int COL_MOVIE_POSTER_PATH = 2;
-    public static final int COL_MOVIE_OVERVIEW = 3;
-    public static final int COL_MOVIE_VOTE_AVERAGE = 4;
-    public static final int COL_MOVIE_RELEASE_DATE = 5;
-    public static final int COL_MOVIE_BACKDROP_PATH = 6;
+    public static final int COL_ID = 0;
+    public static final int COL_MOVIE_ID = 1;
+    public static final int COL_MOVIE_TITLE = 2;
+    public static final int COL_MOVIE_POSTER_PATH = 3;
+    public static final int COL_MOVIE_OVERVIEW = 4;
+    public static final int COL_MOVIE_VOTE_AVERAGE = 5;
+    public static final int COL_MOVIE_RELEASE_DATE = 6;
+    public static final int COL_MOVIE_BACKDROP_PATH = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +96,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
             sortBy = "popular";
         }
 
-        if(sortBy.equals("favorite")){
-            sortBy="popular";
-        }
-
-        Log.d("Sort by", sortBy);
+        isFavorite="0";
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_posters);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
@@ -173,10 +170,6 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         }
     }
 
-    /**
-     * @param response extracts List<{@link MovieModel >} from response
-     * @return
-     */
     private List<MovieModel> fetchResults(Response<PopularMovies> response) {
         PopularMovies popularMovies = response.body();
         return popularMovies.getResults();
@@ -221,16 +214,27 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     @Override
     public void onClick(MovieModel currentMovie) {
-/*
-        ContentValues contentValues = new ContentValues();
 
-        String isFavorite = contentValues.get(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_IS_FAVORITE).toString();
-        if(isFavorite==null){
+        String selection = FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID + " = ?";
+        String[] selectionArgs = { currentMovie.getId().toString() };
+
+        Cursor mCursor = getContentResolver().query(FavoriteContract.FavoriteEntry.CONTENT_URI,
+                null,
+                selection,
+                selectionArgs,
+        null);
+
+        if (mCursor == null)
             isFavorite="0";
-        }else{
-            isFavorite="1";
+        try {
+            while (mCursor.moveToNext()) {
+                isFavorite="1";
+            }
+        } finally {
+            mCursor.close();
         }
-*/
+
+
         Intent intent = new Intent(this, MovieDetail.class);
         Bundle bundle = new Bundle();
         bundle.putString(Intent.EXTRA_TEXT, "not null");
@@ -240,7 +244,8 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         bundle.putString("overview", currentMovie.getOverview());
         bundle.putString("rating", currentMovie.getVoteAverage().toString());
         bundle.putString("release", currentMovie.getReleaseDate());
-  //      bundle.putString("isFavorite", isFavorite);
+        bundle.putString("backdrop", currentMovie.getBackdropPath());
+        bundle.putString("isFavorite", isFavorite);
         intent.putExtras(bundle);
         startActivity(intent);
 
@@ -265,8 +270,6 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
             editor.putString(SORT_BY, sortBy);
             editor.apply();
 
-            Log.d("action_pop", sharedPref.getString(SORT_BY, "")  + " page: " + currentPage);
-
             currentPage = START_PAGE;
 
             adapter = new PaginationAdapter(getApplicationContext(), this);
@@ -280,8 +283,6 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString(SORT_BY, sortBy);
             editor.apply();
-
-            Log.d("action_rate", sharedPref.getString(SORT_BY, "")  + " page: " + currentPage);
 
             currentPage = START_PAGE;
 
@@ -298,10 +299,6 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
             editor.apply();
 
             currentPage = 1;
-
-            Log.d("action_fav", sharedPref.getString(SORT_BY, "")  + " page: " + currentPage);
-
-
 
             adapter = new PaginationAdapter(getApplicationContext(), this);
             mRecyclerView.setAdapter(adapter);
@@ -362,8 +359,8 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
                 }
 
-              //  mMovies = new ArrayList<>();
-              //  mMovies.addAll(movies);
+                mMovies = new ArrayList<>();
+                mMovies.addAll(movies);
             }else{
                 Toast.makeText(mContext, "No favorite yet. Please tag in the Movie Detail", Toast.LENGTH_LONG).show();
             }

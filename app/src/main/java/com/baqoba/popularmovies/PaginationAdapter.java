@@ -85,7 +85,6 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         switch (getItemViewType(position)) {
             case ITEM:
                 final MovieVH movieVH = (MovieVH) holder;
-                Log.d("action_a", "--" + result.getPosterPath() + "--");
 
                 if(result.getPosterPath().equals("null")){
                     Picasso.with(context).load(R.drawable.no_image).resize(185,277).into(movieVH.mPosterImg);
@@ -192,11 +191,6 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         @Override
         public void onClick(View view) {
-    /*        int adapterPosition = getAdapterPosition();
-            String currentmovie = movieResults[adapterPosition];
-            mClickHandler.onClick(currentmovie);
-
-*/
             MovieModel currentMovie = movieResults.get(getAdapterPosition());
          //   mClickHandler.onClick(getAdapterPosition(), view);
             mClickHandler.onClick(currentMovie);

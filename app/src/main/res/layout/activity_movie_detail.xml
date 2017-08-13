@@ -80,10 +80,11 @@
                     </LinearLayout>
 
                     <Button
+                        android:id="@+id/btn_favorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mark As Favorite"
-                        android:id="@+id/btn_favorite"/>
+                        android:gravity="center_vertical"
+                        android:text="Mark As Favorite" />
 
                 </LinearLayout>
             </LinearLayout>
