@@ -1,0 +1,118 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:2:1-35:12
+	package
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:3:5-39
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:5:5-67
+	android:name
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:5:22-64
+application
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:7:5-33:19
+MERGED from [com.android.support:appcompat-v7:25.3.1] /home/ulimhd/.android/build-cache/708e6677f47c83fd5ad7cbf65c23a8d5b28dffc8/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] /home/ulimhd/.android/build-cache/2136c68d309909c7ca3f814c27177130a5bd5c22/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] /home/ulimhd/.android/build-cache/43d9017bcdbf4e03bb55ad1285ed0c8b1864579f/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/ulimhd/.android/build-cache/b8877e5e94972c1ecfae2e36ae34950d0ae8e6aa/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/ulimhd/.android/build-cache/3b0a62a2bb550c2774d527c19efc8a2e9096027f/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/ulimhd/.android/build-cache/14ba7bd00a4fb02bd4a8d26d73c79636d5a331d4/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/ulimhd/.android/build-cache/f883d5124823a4102fd82959a8026dc075124ce6/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/ulimhd/.android/build-cache/6bb3066ee8c4ff3f6f0f2f01a7e8ba3e5718dca9/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:25.3.1] /home/ulimhd/.android/build-cache/6b8d9bb630c4e099ab9a50a8fab31867ac8db47a/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:cardview-v7:25.3.1] /home/ulimhd/.android/build-cache/83e235fb768061af3d1b748bbb42b633651fa467/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.0-beta4] /home/ulimhd/.android/build-cache/8bd18445dc80712324b45d90c534a703eeb73753/output/AndroidManifest.xml:9:5-20
+	android:label
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:10:9-41
+	android:supportsRtl
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:12:9-35
+	android:roundIcon
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:11:9-54
+	android:allowBackup
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:8:9-35
+	android:icon
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:9:9-43
+	android:theme
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:13:9-40
+activity#com.baqoba.popularmovies.MainActivity
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:14:9-20:20
+	android:name
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:14:19-47
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:15:13-19:29
+action#android.intent.action.MAIN
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:16:17-69
+	android:name
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:16:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:18:17-77
+	android:name
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:18:27-74
+activity#com.baqoba.popularmovies.MovieDetail
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:21:9-27:20
+	android:label
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:22:13-58
+	android:parentActivityName
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:23:13-55
+	android:name
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:21:19-46
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:24:13-26:49
+	android:value
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:26:17-46
+	android:name
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:25:17-63
+provider#com.baqoba.popularmovies.data.FavoriteProvider
+ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:29:9-32:40
+	android:authorities
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:30:13-60
+	android:exported
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:32:13-37
+	android:name
+		ADDED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml:31:13-50
+uses-sdk
+INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:appcompat-v7:25.3.1] /home/ulimhd/.android/build-cache/708e6677f47c83fd5ad7cbf65c23a8d5b28dffc8/output/AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:25.3.1] /home/ulimhd/.android/build-cache/2136c68d309909c7ca3f814c27177130a5bd5c22/output/AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] /home/ulimhd/.android/build-cache/43d9017bcdbf4e03bb55ad1285ed0c8b1864579f/output/AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/ulimhd/.android/build-cache/b8877e5e94972c1ecfae2e36ae34950d0ae8e6aa/output/AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/ulimhd/.android/build-cache/3b0a62a2bb550c2774d527c19efc8a2e9096027f/output/AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/ulimhd/.android/build-cache/14ba7bd00a4fb02bd4a8d26d73c79636d5a331d4/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/ulimhd/.android/build-cache/f883d5124823a4102fd82959a8026dc075124ce6/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:25.3.1] /home/ulimhd/.android/build-cache/e0cfe5270fdabda02d8cd1de8ae97cf57958b975/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/ulimhd/.android/build-cache/6bb3066ee8c4ff3f6f0f2f01a7e8ba3e5718dca9/output/AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:25.3.1] /home/ulimhd/.android/build-cache/6b8d9bb630c4e099ab9a50a8fab31867ac8db47a/output/AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:cardview-v7:25.3.1] /home/ulimhd/.android/build-cache/83e235fb768061af3d1b748bbb42b633651fa467/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support.constraint:constraint-layout:1.0.0-beta4] /home/ulimhd/.android/build-cache/8bd18445dc80712324b45d90c534a703eeb73753/output/AndroidManifest.xml:5:5-7:41
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/ulimhd/.android/build-cache/708e6677f47c83fd5ad7cbf65c23a8d5b28dffc8/output/AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+		INJECTED from /media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:appcompat-v7:25.3.1] /home/ulimhd/.android/build-cache/708e6677f47c83fd5ad7cbf65c23a8d5b28dffc8/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] /home/ulimhd/.android/build-cache/2136c68d309909c7ca3f814c27177130a5bd5c22/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] /home/ulimhd/.android/build-cache/43d9017bcdbf4e03bb55ad1285ed0c8b1864579f/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/ulimhd/.android/build-cache/b8877e5e94972c1ecfae2e36ae34950d0ae8e6aa/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/ulimhd/.android/build-cache/3b0a62a2bb550c2774d527c19efc8a2e9096027f/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/ulimhd/.android/build-cache/14ba7bd00a4fb02bd4a8d26d73c79636d5a331d4/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/ulimhd/.android/build-cache/f883d5124823a4102fd82959a8026dc075124ce6/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] /home/ulimhd/.android/build-cache/e0cfe5270fdabda02d8cd1de8ae97cf57958b975/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/ulimhd/.android/build-cache/6bb3066ee8c4ff3f6f0f2f01a7e8ba3e5718dca9/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-compat:25.3.1] /home/ulimhd/.android/build-cache/6b8d9bb630c4e099ab9a50a8fab31867ac8db47a/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:cardview-v7:25.3.1] /home/ulimhd/.android/build-cache/83e235fb768061af3d1b748bbb42b633651fa467/output/AndroidManifest.xml:22:5-24:34
+	android:value
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/ulimhd/.android/build-cache/708e6677f47c83fd5ad7cbf65c23a8d5b28dffc8/output/AndroidManifest.xml:27:9-31
+	android:name
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/ulimhd/.android/build-cache/708e6677f47c83fd5ad7cbf65c23a8d5b28dffc8/output/AndroidManifest.xml:26:9-47

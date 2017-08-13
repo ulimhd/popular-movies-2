@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="movie_detail_activity">Movie Detail</string>
+    <string name="action_popular">Sort by Most Popular</string>
+    <string name="action_rating">Sort by Top Rated</string>
+    <string name="sort_by_favorite_movies">Sort by Favorite</string>
+    <string name="string_release">Release Date:</string>
+    <string name="string_rating">Rating:</string>
+    <string name="sort_by">popular</string>
+    <string name="my_api_key">dummy_key</string>
+    <string name="content_authority">com.baqoba.popularmovies</string>
+    <string name="set_favorite">Set As Favorite</string>
+    <string name="remove_favorite">Remove From Favorite</string>
+</resources>
