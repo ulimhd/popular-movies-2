@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private MovieService movieService;
     private ArrayList<MovieModel> mMovies = null;
 
+    private final String KEY_RECYCLER_STATE = "recycler_state";
+    private static Bundle mBundleRecyclerViewState;
+    int positionIndex;
+    View topView;
+
     private static final String[] MOVIE_COLUMNS = {
             FavoriteContract.FavoriteEntry._ID,
             FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID,
@@ -83,6 +89,17 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     public static final int COL_MOVIE_RELEASE_DATE = 6;
     public static final int COL_MOVIE_BACKDROP_PATH = 7;
 
+    private static final String BUNDLE_RECYCLER_LAYOUT = "classname.recycler.layout";
+
+    GridLayoutManager layoutManager;
+    private static final String LIST_STATE = "listState";
+    private Parcelable mListState = null;
+
+    public static int index = -1;
+    public static int top = -1;
+
+    int currentVisiblePosition = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_posters);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        GridLayoutManager layoutManager
+        layoutManager
                 = new GridLayoutManager(this, calculateNoOfColumns(this));
 
         adapter = new PaginationAdapter(getApplicationContext(), this);
@@ -139,7 +156,28 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
         movieService = MovieApi.getClient().create(MovieService.class);
         loadFirstPage(sortBy);
+
+   /*     int lastFirstVisiblePosition = (layoutManager).findFirstCompletelyVisibleItemPosition();
+
+        (layoutManager).scrollToPosition(lastFirstVisiblePosition);
+*/
     }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        currentVisiblePosition = ((GridLayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //set recyclerview position
+        ((GridLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
+        currentVisiblePosition = 0;
+    }
+
 
     private void loadFirstPage(String sortBy) {
         Log.d(TAG, "loadFirstPage: ");
