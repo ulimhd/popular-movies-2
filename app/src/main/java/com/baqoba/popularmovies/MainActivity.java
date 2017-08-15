@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     int positionIndex;
     View topView;
 
+    static final String SOME_VALUE = "int_value";
+    static final String SOME_OTHER_VALUE = "string_value";
+    int someIntValue;
+    String someStringValue;
+
     private static final String[] MOVIE_COLUMNS = {
             FavoriteContract.FavoriteEntry._ID,
             FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID,
@@ -157,27 +162,25 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         movieService = MovieApi.getClient().create(MovieService.class);
         loadFirstPage(sortBy);
 
-   /*     int lastFirstVisiblePosition = (layoutManager).findFirstCompletelyVisibleItemPosition();
-
-        (layoutManager).scrollToPosition(lastFirstVisiblePosition);
-*/
     }
 
     @Override
-    public void onPause()
-    {
-        super.onPause();
-        currentVisiblePosition = ((GridLayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save custom values into the bundle
+        savedInstanceState.putInt(SOME_VALUE, someIntValue);
+        savedInstanceState.putString(SOME_OTHER_VALUE, someStringValue);
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        //set recyclerview position
-        ((GridLayoutManager)mRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
-        currentVisiblePosition = 0;
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore state members from saved instance
+        someIntValue = savedInstanceState.getInt(SOME_VALUE);
+        someStringValue = savedInstanceState.getString(SOME_OTHER_VALUE);
     }
-
 
     private void loadFirstPage(String sortBy) {
         Log.d(TAG, "loadFirstPage: ");
