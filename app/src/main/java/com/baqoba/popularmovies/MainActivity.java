@@ -64,16 +64,6 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private MovieService movieService;
     private ArrayList<MovieModel> mMovies = null;
 
-    private final String KEY_RECYCLER_STATE = "recycler_state";
-    private static Bundle mBundleRecyclerViewState;
-    int positionIndex;
-    View topView;
-
-    static final String SOME_VALUE = "int_value";
-    static final String SOME_OTHER_VALUE = "string_value";
-    int someIntValue;
-    String someStringValue;
-
     private static final String[] MOVIE_COLUMNS = {
             FavoriteContract.FavoriteEntry._ID,
             FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID,
@@ -97,13 +87,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private static final String BUNDLE_RECYCLER_LAYOUT = "classname.recycler.layout";
 
     GridLayoutManager layoutManager;
-    private static final String LIST_STATE = "listState";
-    private Parcelable mListState = null;
 
-    public static int index = -1;
-    public static int top = -1;
-
-    int currentVisiblePosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,20 +150,20 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save custom values into the bundle
-        savedInstanceState.putInt(SOME_VALUE, someIntValue);
-        savedInstanceState.putString(SOME_OTHER_VALUE, someStringValue);
-        // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mRecyclerView.getLayoutManager().onSaveInstanceState());
+
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(savedInstanceState);
-        // Restore state members from saved instance
-        someIntValue = savedInstanceState.getInt(SOME_VALUE);
-        someStringValue = savedInstanceState.getString(SOME_OTHER_VALUE);
+
+        if(savedInstanceState != null) {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+        }
     }
 
     private void loadFirstPage(String sortBy) {
@@ -218,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     private void loadNextPage() {
         Log.d(TAG, "loadNextPage: " + currentPage);
-
+        Log.d("ISLOADING: " , String.valueOf(isLoading));
         if(sortBy.equals("favorite")){
             new FetchFavoriteMoviesTask(this).execute();
         }else {

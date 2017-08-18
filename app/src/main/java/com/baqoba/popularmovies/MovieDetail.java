@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -54,6 +55,13 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
     private MovieService movieService;
 
     private Toast mToast;
+
+    private static final String BUNDLE_RECYCLER_LAYOUT = "classname.recycler.layout";
+    LinearLayoutManager reviewLayoutManager, trailerLayoutManager;
+    public static int index1 = -1;
+    public static int top1 = -1;
+    public static int index2 = -1;
+    public static int top2 = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +115,8 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             mTrailerRv = (RecyclerView) findViewById(R.id.rv_trailers);
             mTrailerIndicator = (ProgressBar) findViewById(R.id.pb_trailer_indicator);
 
-            LinearLayoutManager reviewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-            LinearLayoutManager trailerLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+            reviewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+            trailerLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
 
             reviewAdapter = new ReviewAdapter(getApplicationContext(), this);
             trailerAdapter = new TrailerAdapter(getApplicationContext(), this);
@@ -141,6 +149,24 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
 
         }
 
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mTrailerRv.getLayoutManager().onSaveInstanceState());
+        savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mReviewRv.getLayoutManager().onSaveInstanceState());
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null) {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            mTrailerRv.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+            mReviewRv.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+        }
     }
 
     private void loadReviews(String idPath) {
