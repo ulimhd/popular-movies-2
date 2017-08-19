@@ -32,6 +32,7 @@ import com.baqoba.popularmovies.utilities.PaginationScrollListener;
 import com.baqoba.popularmovies.utilities.PopularMovies;
 import com.baqoba.popularmovies.utilities.MovieModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     private MovieService movieService;
     private ArrayList<MovieModel> mMovies = null;
+
+    List<MovieModel> results;
+    int scrollPosition = 0;
 
     private static final String[] MOVIE_COLUMNS = {
             FavoriteContract.FavoriteEntry._ID,
@@ -101,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         }else{
             sortBy = "popular";
         }
+
+
 
         isFavorite="0";
 
@@ -144,17 +150,31 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         });
 
         movieService = MovieApi.getClient().create(MovieService.class);
-        loadFirstPage(sortBy);
+
+        if(savedInstanceState!=null){
+            scrollPosition = savedInstanceState.getInt("scroll_position");
+            results = (List<MovieModel>) savedInstanceState.getSerializable("my_list");
+            currentPage = savedInstanceState.getInt("current_page");
+            adapter.addAll(results);
+        }else {
+
+            loadFirstPage(sortBy);
+        }
+
+        mRecyclerView.scrollToPosition(scrollPosition);
 
     }
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mRecyclerView.getLayoutManager().onSaveInstanceState());
+        savedInstanceState.putInt("scroll_position", scrollPosition);
+        savedInstanceState.putInt("curent_page", currentPage);
+        savedInstanceState.putSerializable("my_list", (Serializable) results);
+      //  savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mRecyclerView.getLayoutManager().onSaveInstanceState());
 
     }
-
+/*
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
@@ -163,6 +183,16 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         if(savedInstanceState != null) {
             Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
             mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+        }
+    }
+*/
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(layoutManager != null){
+            scrollPosition = layoutManager.findFirstVisibleItemPosition();
         }
     }
 
@@ -212,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
                     adapter.removeLoadingFooter();
                     isLoading = false;
 
-                    List<MovieModel> results = fetchResults(response);
+                    results = fetchResults(response);
                     adapter.addAll(results);
 
                     if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();

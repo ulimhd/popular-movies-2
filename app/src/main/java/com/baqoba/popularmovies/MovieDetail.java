@@ -29,6 +29,7 @@ import com.baqoba.popularmovies.utilities.Trailers;
 import com.baqoba.popularmovies.utilities.Utility;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 import retrofit2.Call;
@@ -62,6 +63,11 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
     public static int top1 = -1;
     public static int index2 = -1;
     public static int top2 = -1;
+
+    List<TrailerModel> trailerResult;
+    List<ReviewModel> reviewResult;
+    int trailerPosition=0;
+    int reviewPosition=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,8 +139,23 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
 
             movieService = MovieApi.getClient().create(MovieService.class);
 
-            loadReviews(idPath);
-            loadTrailers(idPath);
+            if(savedInstanceState!=null){
+                reviewPosition = savedInstanceState.getInt("position_review");
+               // trailerPosition = savedInstanceState.getInt("position_trailer");
+                reviewResult = (List<ReviewModel>) savedInstanceState.getSerializable("review_list");
+             //   trailerResult = (List<TrailerModel>) savedInstanceState.getSerializable("trailer_list");
+
+                reviewAdapter.addAll(reviewResult);
+            //    trailerAdapter.addAll(trailerResult);
+            }else {
+
+                loadReviews(idPath);
+             //   loadTrailers(idPath);
+            }
+
+          //  mTrailerRv.scrollToPosition(trailerPosition);
+            mReviewRv.scrollToPosition(reviewPosition);
+
 
             mFavoriteBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -150,6 +171,18 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
         }
 
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+      //  savedInstanceState.putInt("position_trailer", trailerPosition);
+        savedInstanceState.putInt("position_review", reviewPosition);
+        savedInstanceState.putSerializable("review_list", (Serializable) reviewResult);
+     //   savedInstanceState.putSerializable("trailer_list", (Serializable) trailerResult);
+     //   savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mRecyclerView.getLayoutManager().onSaveInstanceState());
+
+    }
+    /*
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -168,6 +201,20 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             mReviewRv.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
         }
     }
+*/
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(reviewLayoutManager != null){
+            reviewPosition = reviewLayoutManager.findFirstVisibleItemPosition();
+        }
+
+    //    if(trailerLayoutManager != null){
+      //      trailerPosition = trailerLayoutManager.findFirstVisibleItemPosition();
+      //  }
+    }
 
     private void loadReviews(String idPath) {
         callReviewsApi(idPath).enqueue(new Callback<Reviews>() {
@@ -175,9 +222,9 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             public void onResponse(Call<Reviews> call, Response<Reviews> response) {
                 // Got data. Send it to adapter
 
-                List<ReviewModel> results = fetchResult(response);
+                List<ReviewModel> reviewResult = fetchResult(response);
                 mReviewIndicator.setVisibility(View.GONE);
-                reviewAdapter.addAll(results);
+                reviewAdapter.addAll(reviewResult);
 
             }
 
@@ -213,9 +260,9 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             public void onResponse(Call<Trailers> call, Response<Trailers> response) {
                 // Got data. Send it to adapter
 
-                List<TrailerModel> results = fetchResults(response);
+                List<TrailerModel> trailerResult = fetchResults(response);
                 mTrailerIndicator.setVisibility(View.GONE);
-                trailerAdapter.addAll(results);
+                trailerAdapter.addAll(trailerResult);
             }
 
             @Override
