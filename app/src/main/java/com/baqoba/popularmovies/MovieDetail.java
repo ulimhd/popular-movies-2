@@ -140,6 +140,7 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             movieService = MovieApi.getClient().create(MovieService.class);
 
             if(savedInstanceState!=null){
+              //  Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
                 reviewPosition = savedInstanceState.getInt("position_review");
                // trailerPosition = savedInstanceState.getInt("position_trailer");
                 reviewResult = (List<ReviewModel>) savedInstanceState.getSerializable("review_list");
@@ -150,11 +151,14 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             }else {
 
                 loadReviews(idPath);
-             //   loadTrailers(idPath);
+                loadTrailers(idPath);
             }
 
-          //  mTrailerRv.scrollToPosition(trailerPosition);
+            mTrailerRv.scrollToPosition(trailerPosition);
             mReviewRv.scrollToPosition(reviewPosition);
+
+          //  loadReviews(idPath);
+         //   loadTrailers(idPath);
 
 
             mFavoriteBtn.setOnClickListener(new View.OnClickListener() {
@@ -175,11 +179,11 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-      //  savedInstanceState.putInt("position_trailer", trailerPosition);
+        savedInstanceState.putInt("position_trailer", trailerPosition);
         savedInstanceState.putInt("position_review", reviewPosition);
         savedInstanceState.putSerializable("review_list", (Serializable) reviewResult);
-     //   savedInstanceState.putSerializable("trailer_list", (Serializable) trailerResult);
-     //   savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mRecyclerView.getLayoutManager().onSaveInstanceState());
+        savedInstanceState.putSerializable("trailer_list", (Serializable) trailerResult);
+     //   savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mReviewRv.getLayoutManager().onSaveInstanceState());
 
     }
     /*
@@ -211,9 +215,10 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             reviewPosition = reviewLayoutManager.findFirstVisibleItemPosition();
         }
 
-    //    if(trailerLayoutManager != null){
-      //      trailerPosition = trailerLayoutManager.findFirstVisibleItemPosition();
-      //  }
+        if(trailerLayoutManager != null){
+            trailerPosition = trailerLayoutManager.findFirstVisibleItemPosition();
+        }
+
     }
 
     private void loadReviews(String idPath) {
