@@ -3,6 +3,7 @@ package com.baqoba.popularmovies.utilities;
 
 import android.database.Cursor;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.baqoba.popularmovies.MainActivity;
@@ -10,7 +11,7 @@ import com.baqoba.popularmovies.data.FavoriteContract;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MovieModel {
+public class MovieModel implements Serializable{
 
     public MovieModel(){
 

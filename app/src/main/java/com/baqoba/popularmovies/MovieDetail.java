@@ -2,6 +2,7 @@ package com.baqoba.popularmovies;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -141,24 +142,31 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
 
             if(savedInstanceState!=null){
               //  Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-                reviewPosition = savedInstanceState.getInt("position_review");
-               // trailerPosition = savedInstanceState.getInt("position_trailer");
-                reviewResult = (List<ReviewModel>) savedInstanceState.getSerializable("review_list");
-             //   trailerResult = (List<TrailerModel>) savedInstanceState.getSerializable("trailer_list");
 
-                reviewAdapter.addAll(reviewResult);
-            //    trailerAdapter.addAll(trailerResult);
+                if(reviewResult != null) {
+                    reviewPosition = savedInstanceState.getInt("position_review");
+                    reviewResult = (List<ReviewModel>) savedInstanceState.getSerializable("review_list");
+                    reviewAdapter.addAll(reviewResult);
+                    mReviewRv.scrollToPosition(reviewPosition);
+                }
+
+                if(trailerResult != null) {
+                    trailerPosition = savedInstanceState.getInt("position_trailer");
+                    trailerResult = (List<TrailerModel>) savedInstanceState.getSerializable("trailer_list");
+                    trailerAdapter.addAll(trailerResult);
+                    mTrailerRv.scrollToPosition(trailerPosition);
+                }
             }else {
 
                 loadReviews(idPath);
                 loadTrailers(idPath);
             }
 
-            mTrailerRv.scrollToPosition(trailerPosition);
-            mReviewRv.scrollToPosition(reviewPosition);
 
-          //  loadReviews(idPath);
-         //   loadTrailers(idPath);
+
+
+//            loadReviews(idPath);
+ //           loadTrailers(idPath);
 
 
             mFavoriteBtn.setOnClickListener(new View.OnClickListener() {
@@ -176,13 +184,46 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
 
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("detail_active", true);
+        ed.commit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("detail_active", false);
+        ed.commit();
+
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt("position_trailer", trailerPosition);
-        savedInstanceState.putInt("position_review", reviewPosition);
-        savedInstanceState.putSerializable("review_list", (Serializable) reviewResult);
-        savedInstanceState.putSerializable("trailer_list", (Serializable) trailerResult);
+
+        if(!reviewResult.isEmpty()) {
+            savedInstanceState.putInt("position_review", reviewPosition);
+            savedInstanceState.putSerializable("review_list", (Serializable) reviewResult);
+
+
+        }
+
+        if(!trailerResult.isEmpty()) {
+            savedInstanceState.putInt("position_trailer", trailerPosition);
+            savedInstanceState.putSerializable("trailer_list", (Serializable) trailerResult);
+
+        }
      //   savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mReviewRv.getLayoutManager().onSaveInstanceState());
 
     }
@@ -227,7 +268,7 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             public void onResponse(Call<Reviews> call, Response<Reviews> response) {
                 // Got data. Send it to adapter
 
-                List<ReviewModel> reviewResult = fetchResult(response);
+                reviewResult = fetchResult(response);
                 mReviewIndicator.setVisibility(View.GONE);
                 reviewAdapter.addAll(reviewResult);
 
@@ -265,7 +306,7 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
             public void onResponse(Call<Trailers> call, Response<Trailers> response) {
                 // Got data. Send it to adapter
 
-                List<TrailerModel> trailerResult = fetchResults(response);
+                trailerResult = fetchResults(response);
                 mTrailerIndicator.setVisibility(View.GONE);
                 trailerAdapter.addAll(trailerResult);
             }
@@ -323,10 +364,6 @@ public class MovieDetail extends AppCompatActivity implements TrailerAdapter.Tra
                 contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_VOTE_AVERAGE, ratingPath);
                 contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_RELEASE_DATE, ratingPath);
                 contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_BACKDROP_PATH, backdropPath);
-                Log.d("idpath: ", idPath);
-                Log.d("titlePath: ", titlePath);
-                Log.d("posterPath: ", posterPath);
-                Log.d("backdropPath: ", backdropPath);
                 // Insert the content values via a ContentResolver
                 return getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, contentValues);
             }

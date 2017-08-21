@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     private boolean isLoading = false;
     private boolean isLastPage = false;
+    boolean detailActive = false;
 
     private MovieService movieService;
     private ArrayList<MovieModel> mMovies = null;
@@ -106,7 +107,11 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
             sortBy = "popular";
         }
 
-
+        if (sharedPref.contains("detail_active")){
+            detailActive = true;
+        }else{
+            detailActive = false;
+        }
 
         isFavorite="0";
 
@@ -153,9 +158,17 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
         if(savedInstanceState!=null){
             scrollPosition = savedInstanceState.getInt("scroll_position");
-            results = (List<MovieModel>) savedInstanceState.getSerializable("my_list");
             currentPage = savedInstanceState.getInt("current_page");
+            sortBy = savedInstanceState.getString("sort_by");
+
+            if(!detailActive) {
+                results = (List<MovieModel>) savedInstanceState.getSerializable("my_list");
+            }
+
             adapter.addAll(results);
+
+          //  loadNextPage();
+
         }else {
 
             loadFirstPage(sortBy);
@@ -169,8 +182,12 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt("scroll_position", scrollPosition);
-        savedInstanceState.putInt("curent_page", currentPage);
-        savedInstanceState.putSerializable("my_list", (Serializable) results);
+        savedInstanceState.putInt("current_page", currentPage);
+        savedInstanceState.putString("sort_by", sortBy);
+
+        if(!detailActive) {
+            savedInstanceState.putSerializable("my_list", (Serializable) results);
+        }
       //  savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mRecyclerView.getLayoutManager().onSaveInstanceState());
 
     }
@@ -208,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
                 public void onResponse(Call<PopularMovies> call, Response<PopularMovies> response) {
                     // Got data. Send it to adapter
 
-                    List<MovieModel> results = fetchResults(response);
+                    results = fetchResults(response);
                     mLoadingIndicator.setVisibility(View.GONE);
                     adapter.addAll(results);
 
@@ -232,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     private void loadNextPage() {
         Log.d(TAG, "loadNextPage: " + currentPage);
-        Log.d("ISLOADING: " , String.valueOf(isLoading));
         if(sortBy.equals("favorite")){
             new FetchFavoriteMoviesTask(this).execute();
         }else {
