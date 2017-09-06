@@ -1,17 +1,13 @@
 package com.baqoba.popularmovies;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Parcelable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,10 +23,10 @@ import android.widget.Toast;
 import com.baqoba.popularmovies.data.FavoriteContract;
 import com.baqoba.popularmovies.utilities.EndlessRecyclerViewScrollListener;
 import com.baqoba.popularmovies.utilities.MovieApi;
+import com.baqoba.popularmovies.utilities.MovieModel;
 import com.baqoba.popularmovies.utilities.MovieService;
 import com.baqoba.popularmovies.utilities.PaginationScrollListener;
 import com.baqoba.popularmovies.utilities.PopularMovies;
-import com.baqoba.popularmovies.utilities.MovieModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private RecyclerView mRecyclerView;
     private ProgressBar mLoadingIndicator;
     private String sortBy;
+
+    public final static String LIST_STATE_KEY = "recycler_list_state";
+    public final static String SAVED_RECYCLER_VIEW_DATASET_ID = "recycler_dataset";
+    Parcelable listState;
 
     private EndlessRecyclerViewScrollListener scrollListener;
 
@@ -157,20 +157,34 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         movieService = MovieApi.getClient().create(MovieService.class);
 
         if(savedInstanceState!=null){
-            scrollPosition = savedInstanceState.getInt("scroll_position");
-            currentPage = savedInstanceState.getInt("current_page");
-            sortBy = savedInstanceState.getString("sort_by");
 
-            if(!detailActive) {
-                results = (List<MovieModel>) savedInstanceState.getSerializable("my_list");
-            }
-
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+            // getting recyclerview items
+            results = (List<MovieModel>) savedInstanceState.getSerializable(SAVED_RECYCLER_VIEW_DATASET_ID);
+            // Restoring adapter items
             adapter.addAll(results);
+            // Restoring recycler view position
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
+
+//            scrollPosition = savedInstanceState.getInt("scroll_position");
+//            currentPage = savedInstanceState.getInt("current_page");
+//            sortBy = savedInstanceState.getString("sort_by");
+//
+//            if(!detailActive) {
+//                results = (List<MovieModel>) savedInstanceState.getSerializable("my_list");
+//            }
+//
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    adapter.addAll(results);
+//                }
+//            }, 500);
 
           //  loadNextPage();
 
         }else {
-
             loadFirstPage(sortBy);
         }
 
@@ -180,29 +194,45 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt("scroll_position", scrollPosition);
-        savedInstanceState.putInt("current_page", currentPage);
-        savedInstanceState.putString("sort_by", sortBy);
 
-        if(!detailActive) {
-            savedInstanceState.putSerializable("my_list", (Serializable) results);
-        }
+        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        // putting recyclerview position
+        savedInstanceState.putParcelable(LIST_STATE_KEY, listState);
+        // putting recyclerview items
+        savedInstanceState.putSerializable(SAVED_RECYCLER_VIEW_DATASET_ID
+                , (Serializable) results);
+
+//        savedInstanceState.putInt("scroll_position", scrollPosition);
+//        savedInstanceState.putInt("current_page", currentPage);
+//        savedInstanceState.putString("sort_by", sortBy);
+//
+//        if(!detailActive) {
+//            savedInstanceState.putSerializable("my_list", (Serializable) results);
+//        }
+
+//        listState = layoutManager.onSaveInstanceState();
+//        savedInstanceState.putParcelable(LIST_STATE_KEY, listState);
+
       //  savedInstanceState.putParcelable(BUNDLE_RECYCLER_LAYOUT , mRecyclerView.getLayoutManager().onSaveInstanceState());
+        super.onSaveInstanceState(savedInstanceState);
 
     }
-/*
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(savedInstanceState);
 
-        if(savedInstanceState != null) {
-            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
-        }
+//        if(savedInstanceState != null) {
+//            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+//            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+//        }
+
+        if(savedInstanceState != null)
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+
     }
-*/
+
 
     @Override
     protected void onPause() {
@@ -211,6 +241,16 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         if(layoutManager != null){
             scrollPosition = layoutManager.findFirstVisibleItemPosition();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (listState != null) {
+            layoutManager.onRestoreInstanceState(listState);
+        }
+
     }
 
     private void loadFirstPage(String sortBy) {

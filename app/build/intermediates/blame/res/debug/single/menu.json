@@ -1,10 +1,6 @@
 [
     {
-        "merged": "/media/ulimhd/Data/Uli/git/PopularMovies2_after_sql/app/build/intermediates/res/merged/debug/menu/sort.xml",
-        "source": "/media/ulimhd/Data/Uli/git/PopularMovies2_after_sql/app/src/main/res/menu/sort.xml"
-    },
-    {
-        "merged": "/media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/build/intermediates/res/merged/debug/menu/sort.xml",
-        "source": "/media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/src/main/res/menu/sort.xml"
+        "merged": "/Users/pa1pal/Documents/AndroidStudioProjects/udacity/popular-movies-2/app/build/intermediates/res/merged/debug/menu/sort.xml",
+        "source": "/Users/pa1pal/Documents/AndroidStudioProjects/udacity/popular-movies-2/app/src/main/res/menu/sort.xml"
     }
 ]

@@ -3,7 +3,6 @@ package com.baqoba.popularmovies;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,11 +85,16 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case ITEM:
                 final MovieVH movieVH = (MovieVH) holder;
 
-                if(result.getPosterPath().equals("null")){
-                    Picasso.with(context).load(R.drawable.no_image).resize(185,277).into(movieVH.mPosterImg);
-                } else {
-                    Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + result.getPosterPath()).into(movieVH.mPosterImg);
+                try {
+                    if (result.getPosterPath().equals("null")) {
+                        Picasso.with(context).load(R.drawable.no_image).resize(185, 277).into(movieVH.mPosterImg);
+                    } else {
+                        Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + result.getPosterPath()).into(movieVH.mPosterImg);
+                    }
+                } catch (NullPointerException e) {
+
                 }
+
 
                 break;
 
@@ -178,7 +182,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     /**
      * Main list's content ViewHolder
      */
-    protected class MovieVH extends RecyclerView.ViewHolder implements View.OnClickListener{
+    protected class MovieVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mPosterImg;
 
         public MovieVH(View itemView) {
@@ -192,7 +196,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @Override
         public void onClick(View view) {
             MovieModel currentMovie = movieResults.get(getAdapterPosition());
-         //   mClickHandler.onClick(getAdapterPosition(), view);
+            //   mClickHandler.onClick(getAdapterPosition(), view);
             mClickHandler.onClick(currentMovie);
         }
     }
