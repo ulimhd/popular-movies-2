@@ -1,10 +1,6 @@
 [
     {
-        "merged": "/media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/build/intermediates/res/merged/debug/drawable-v23/abc_control_background_material.xml",
-        "source": "/home/ulimhd/.android/build-cache/708e6677f47c83fd5ad7cbf65c23a8d5b28dffc8/output/res/drawable-v23/abc_control_background_material.xml"
-    },
-    {
-        "merged": "/media/ulimhd/Data/Uli/git/PopularMovies2_after_sql/app/build/intermediates/res/merged/debug/drawable-v23/abc_control_background_material.xml",
-        "source": "/home/ulimhd/.android/build-cache/708e6677f47c83fd5ad7cbf65c23a8d5b28dffc8/output/res/drawable-v23/abc_control_background_material.xml"
+        "merged": "/Users/pa1pal/Documents/AndroidStudioProjects/udacity/popular-movies-2/app/build/intermediates/res/merged/debug/drawable-v23/abc_control_background_material.xml",
+        "source": "/Users/pa1pal/.android/build-cache/295b57b3874209836303500a0df61707421fedc6/output/res/drawable-v23/abc_control_background_material.xml"
     }
 ]

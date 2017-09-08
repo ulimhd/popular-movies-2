@@ -1,4 +1,0 @@
-#Fri Aug 18 13:34:48 WIB 2017
-base.0=/media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main
-renamed.0=classes.dex
-file.0=/media/ulimhd/Data/Uli/AndroidStudioProjects/Udacity/PopularMovies2_after_sql/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex
